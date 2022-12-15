@@ -1,5 +1,12 @@
 function App() {
-  return <div></div>;
+  return (
+    <div>
+      <form>
+        <input type="text" placeholder="Search..." />
+        <button type="submit">Enter</button>
+      </form>
+    </div>
+  );
 }
 
 export default App;
