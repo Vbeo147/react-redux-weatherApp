@@ -1,27 +1,34 @@
 import { useDispatch, useSelector } from "react-redux";
-import { increaseAsync, decreaseAsync } from "./modules/counterReducer";
 import { getWeather } from "./modules/weatherReducer";
+import { useState } from "react";
 
 function App() {
-  const { counterReducer, weatherReducer } = useSelector((state) => state);
+  const [target, setTarget] = useState("");
+  const { weatherReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
-  const onIncrease = () => {
-    dispatch(increaseAsync());
-    dispatch(getWeather());
+  const onChange = (e) => {
+    setTarget(e.target.value);
   };
-  const onDecrease = () => {
-    dispatch(decreaseAsync());
+  const onSubmit = (e) => {
+    e.preventDefault();
+    dispatch(getWeather(target));
   };
   return (
     <div>
-      <div>{!weatherReducer.weather.loading && counterReducer.value}</div>
-      <div>
-        <button onClick={onIncrease}>+</button>
-        <button onClick={onDecrease}>-</button>
-      </div>
-      <br />
-      <form>
-        <input type="text" placeholder="Search..." />
+      {weatherReducer.weather.loading ? (
+        <div>Loading...</div>
+      ) : weatherReducer.weather.data ? (
+        <>
+          <div>{`[ ${weatherReducer.weather.data.sys.country} : ${weatherReducer.weather.data.name} ]`}</div>
+          <div>{weatherReducer.weather.data.weather[0].main}</div>
+        </>
+      ) : (
+        <div>
+          {weatherReducer.weather.error ? weatherReducer.weather.error : ""}
+        </div>
+      )}
+      <form onSubmit={onSubmit}>
+        <input onChange={onChange} type="text" placeholder="Search..." />
         <button type="submit">Enter</button>
       </form>
     </div>

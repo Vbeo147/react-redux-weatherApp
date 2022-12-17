@@ -1,7 +1,6 @@
 import { combineReducers } from "redux";
-import counterReducer from "./modules/counterReducer";
 import weatherReducer from "./modules/weatherReducer";
 
-const rootReducer = combineReducers({ counterReducer, weatherReducer });
+const rootReducer = combineReducers({ weatherReducer });
 
 export default rootReducer;
