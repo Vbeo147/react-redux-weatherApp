@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getWeather, getMyWeatehr } from "./modules/weatherReducer";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import "./index.css";
 
 function App() {
   const [target, setTarget] = useState("");
+  const [time, setTime] = useState();
   const {
     weatherReducer: { weather },
   } = useSelector((state) => state);
@@ -20,7 +21,15 @@ function App() {
     }
     setTarget("");
   };
-
+  setInterval(() => {
+    if (weather.data?.sys) {
+      setTime(
+        new Intl.DateTimeFormat("ko-KR", {
+          timeStyle: "medium",
+        }).format(new Date())
+      );
+    }
+  }, 1000);
   useEffect(() => {
     const CurrentWeather = weather.data?.weather[0].main;
     const html = document.querySelector("html");
@@ -60,7 +69,7 @@ function App() {
             <div>{weather.error ? weather.error : ""}</div>
           )}
         </div>
-
+        <div id="time-container">{time}</div>
         <div id="form-container">
           <form onSubmit={onSubmit}>
             <input
