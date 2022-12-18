@@ -5,8 +5,16 @@ const GET_WEATHER = "GET_WEATHER";
 const GET_WEATHER_SUCCESS = "GET_WEATHER_SUCCESS";
 const GET_WEATHER_ERROR = "GET_WEATHER_ERROR";
 
+const ActionDispatch = (type, param) => {
+  if (param) {
+    return { type, param };
+  } else {
+    return { type };
+  }
+};
+
 export const getWeather = (target) => async (dispatch) => {
-  dispatch({ type: GET_WEATHER });
+  dispatch(ActionDispatch(GET_WEATHER));
   await axios
     .get(
       `https://api.openweathermap.org/data/2.5/weather?q=${target}&appid=${
@@ -14,15 +22,15 @@ export const getWeather = (target) => async (dispatch) => {
       }`
     )
     .then((weather) => {
-      dispatch({ type: GET_WEATHER_SUCCESS, data: weather.data });
+      dispatch(ActionDispatch(GET_WEATHER_SUCCESS, weather.data));
     })
     .catch((error) =>
-      dispatch({ type: GET_WEATHER_ERROR, error: error.response.data.message })
+      dispatch(ActionDispatch(GET_WEATHER_ERROR, error.response.data.message))
     );
 };
 
 export const getMyWeatehr = () => (dispatch) => {
-  dispatch({ type: GET_WEATHER });
+  dispatch(ActionDispatch(GET_WEATHER));
   navigator.geolocation.getCurrentPosition(async (position) => {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
@@ -33,13 +41,10 @@ export const getMyWeatehr = () => (dispatch) => {
         }`
       )
       .then((weather) =>
-        dispatch({ type: GET_WEATHER_SUCCESS, data: weather.data })
+        dispatch(ActionDispatch(GET_WEATHER_SUCCESS, weather.data))
       )
       .catch((error) =>
-        dispatch({
-          type: GET_WEATHER_ERROR,
-          error: error.response.data.message,
-        })
+        dispatch(ActionDispatch(GET_WEATHER_ERROR, error.response.data.message))
       );
   });
 };
@@ -59,12 +64,12 @@ export default function weatherReducer(state = initialState, action) {
     case GET_WEATHER_SUCCESS:
       return {
         ...state,
-        weather: reducerUtils.success(action.data),
+        weather: reducerUtils.success(action.param),
       };
     case GET_WEATHER_ERROR:
       return {
         ...state,
-        weather: reducerUtils.error(action.error),
+        weather: reducerUtils.error(action.param),
       };
     default:
       return state;

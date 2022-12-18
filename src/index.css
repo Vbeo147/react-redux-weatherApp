@@ -24,11 +24,13 @@ body {
 }
 
 #main-container {
-  height: 100%;
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   margin-top: 10rem;
+  background-color: blanchedalmond;
+  padding: 1rem;
+  border: 4px solid lightgray;
+  border-radius: 0.5rem;
 }

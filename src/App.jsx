@@ -20,6 +20,7 @@ function App() {
     }
     setTarget("");
   };
+
   useEffect(() => {
     const CurrentWeather = weather.data?.weather[0].main;
     const html = document.querySelector("html");
@@ -32,6 +33,7 @@ function App() {
       html.classList.remove(...html.classList);
     };
   }, [weather]);
+
   useEffect(() => {
     if (!weather.data) dispatch(getMyWeatehr());
   }, []);
@@ -42,9 +44,9 @@ function App() {
           {weather.loading ? (
             <div>Loading...</div>
           ) : weather.data ? (
-            <div>
-              <div>{`${weather.data.sys.country} ${weather.data.name}`}</div>
-              <div>
+            <div id="weather-info-container">
+              <div className="weather-title">{`${weather.data.sys.country} ${weather.data.name}`}</div>
+              <div className="weather-subtitle">
                 <span>
                   <img
                     src={`http://openweathermap.org/img/wn/${weather.data.weather[0].icon}@2x.png`}
