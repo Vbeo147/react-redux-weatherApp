@@ -1,0 +1,25 @@
+#background-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Clouds-background,
+.Clear-background,
+.Haze-background {
+  background-size: 100% 100%;
+}
+
+.Clouds-background {
+  background-image: url("../img/Cloud.png");
+}
+
+.Clear-background {
+  background-image: url("../img/Clear.png");
+}
+
+.Haze-background {
+  background-image: url("../img/Haze.png");
+}

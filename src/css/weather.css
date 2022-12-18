@@ -1,0 +1,21 @@
+#weather-container {
+  margin-bottom: 4rem;
+}
+
+#form-container form input {
+  margin-right: 0.5rem;
+  width: 300px;
+  height: 35px;
+  border-top: transparent;
+  border-left: transparent;
+  border-right: transparent;
+  border-bottom: 3px solid rgba(0, 0, 0, 0.4);
+  padding: 0px 6px;
+  background-color: transparent;
+  outline: none;
+}
+
+#form-container form input::placeholder {
+  opacity: 75%;
+  font-size: 1rem;
+}

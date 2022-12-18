@@ -1,0 +1,34 @@
+/* import CSS */
+
+@import url("./css/background.css");
+@import url("./css/weather.css");
+
+/* index CSS */
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.fade-in {
+  animation: fadein 1s linear;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#main-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 10rem;
+}

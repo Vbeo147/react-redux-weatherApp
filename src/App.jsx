@@ -1,36 +1,78 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getWeather } from "./modules/weatherReducer";
-import { useState } from "react";
+import { getWeather, getMyWeatehr } from "./modules/weatherReducer";
+import { useState, useEffect, useRef } from "react";
+import "./index.css";
 
 function App() {
   const [target, setTarget] = useState("");
-  const { weatherReducer } = useSelector((state) => state);
+  const {
+    weatherReducer: { weather },
+  } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const inputRef = useRef();
   const onChange = (e) => {
     setTarget(e.target.value);
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(getWeather(target));
+    if (target !== weather.data?.name) {
+      dispatch(getWeather(target));
+    }
+    setTarget("");
   };
+  useEffect(() => {
+    const CurrentWeather = weather.data?.weather[0].main;
+    const html = document.querySelector("html");
+    inputRef.current.focus();
+    if (CurrentWeather) {
+      html.classList.add(`${CurrentWeather}-background`);
+      html.classList.add("fade-in");
+    }
+    return () => {
+      html.classList.remove(...html.classList);
+    };
+  }, [weather]);
+  useEffect(() => {
+    if (!weather.data) dispatch(getMyWeatehr());
+  }, []);
   return (
-    <div>
-      {weatherReducer.weather.loading ? (
-        <div>Loading...</div>
-      ) : weatherReducer.weather.data ? (
-        <>
-          <div>{`[ ${weatherReducer.weather.data.sys.country} : ${weatherReducer.weather.data.name} ]`}</div>
-          <div>{weatherReducer.weather.data.weather[0].main}</div>
-        </>
-      ) : (
-        <div>
-          {weatherReducer.weather.error ? weatherReducer.weather.error : ""}
+    <div id="background-container">
+      <div id="main-container">
+        <div id="weather-container">
+          {weather.loading ? (
+            <div>Loading...</div>
+          ) : weather.data ? (
+            <div>
+              <div>{`${weather.data.sys.country} ${weather.data.name}`}</div>
+              <div>
+                <span>
+                  <img
+                    src={`http://openweathermap.org/img/wn/${weather.data.weather[0].icon}@2x.png`}
+                    alt="weather icon"
+                  ></img>
+                </span>
+                <span>{weather.data.weather[0].main}</span>
+              </div>
+            </div>
+          ) : (
+            <div>{weather.error ? weather.error : ""}</div>
+          )}
         </div>
-      )}
-      <form onSubmit={onSubmit}>
-        <input onChange={onChange} type="text" placeholder="Search..." />
-        <button type="submit">Enter</button>
-      </form>
+
+        <div id="form-container">
+          <form onSubmit={onSubmit}>
+            <input
+              onChange={onChange}
+              value={target}
+              type="text"
+              placeholder="Search..."
+              required
+              ref={inputRef}
+            />
+            <button type="submit">Enter</button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }
