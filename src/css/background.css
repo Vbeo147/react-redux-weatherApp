@@ -8,7 +8,9 @@
 
 .Clouds-background,
 .Clear-background,
-.Haze-background {
+.Haze-background,
+.Snow-background,
+.Rain-background {
   background-size: 100% 100%;
 }
 
@@ -22,4 +24,12 @@
 
 .Haze-background {
   background-image: url("../img/Haze.png");
+}
+
+.Snow-background {
+  background-image: url("../img/Snow.png");
+}
+
+.Rain-background {
+  background-image: url("../img/Rain.png");
 }
